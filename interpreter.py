@@ -5,6 +5,7 @@ class Interpreter:
     def reset(self):
         self.tape = bytearray(300_000)
         self.head = 0
+        self.output = ""
 
     def interpret(self, program: str, arg: bytearray | None) -> bytearray:
         program_head = 0
@@ -22,7 +23,7 @@ class Interpreter:
                 case "-":
                     self.tape[self.head] -= 1
                 case ".":
-                    print(bytes([self.tape[self.head]]).decode('utf-8'))
+                    self.output += bytes([self.tape[self.head]]).decode('utf-8')
                 case ",":
                     if input_head >= len(arg):
                         self.tape[self.head] = 0
@@ -47,4 +48,4 @@ class Interpreter:
                 case _:
                     raise Exception("disallowed character!")
             program_head += 1
-        return self.tape
+        return self.output
